@@ -90,7 +90,7 @@ def get_args() -> Args:
         args.template = 'markdown'
     elif args.template.lower() == 'r':
         args.template = 'script'
-    
+
     if args.template not in ['script', 'markdown']:
         parser.error(f'--template "{args.template}" not recognized')
 
@@ -182,7 +182,7 @@ Here is a sub~script~
 
 Here is some `inline code`
 
-Even inline LaTeX can be used like $f(k) = {{n \choose k}} p^{{k}} (1-p)^{{n-k}}$
+Inline LaTeX can be used like $f(k) = {{n \\choose k}} p^{{k}} (1-p)^{{n-k}}$
 
 """
 
