@@ -6,7 +6,7 @@ Python program to create a new R program. Currently supports R script and Rmarkd
 
 ```
 $ ./new_r.py --help
-usage: new_r.py [-h] [-t TEMPLATE] [-n NAME] [-e EMAIL] [-p PURPOSE] [-f] program
+usage: new_r.py [-h] [-n NAME] [-e EMAIL] [-p PURPOSE] [-f] program
 
 Create a new R file
 
@@ -23,7 +23,7 @@ optional arguments:
   -f, --force           Overwrite existing (default: False)
   ```
 
-  The template is selected based on the file extension of the given `program` name. Currently `.R` and `.Rmd` templates are saupported. Accordingly, the `program` name must end with one of those extensions.
+  The template is selected based on the file extension of the given `program` name. Currently `.R` and `.Rmd` templates are supported. Accordingly, the `program` name must end with one of those extensions.
 
 ### Setting your own defaults
 
