@@ -4,6 +4,7 @@
 import io
 import os
 import random
+import re
 import string
 from subprocess import getstatusoutput
 from shutil import rmtree
@@ -43,7 +44,20 @@ def test_usage():
 
 
 # --------------------------------------------------
-def test_ok():
+def test_bad_extension():
+    """ Fails on unrecognized file extension """
+
+    abs_new = os.path.abspath(PRG)
+    basename = random_string()
+    file_ext = random_string()
+    name = basename + '.' + file_ext
+    retval, out = getstatusoutput(f'{abs_new} {name}')
+    assert retval != 0
+    assert re.search('Extension must be either .R or .Rmd', out)
+
+
+# --------------------------------------------------
+def run_program(file_ext: str, expected: str):
     """ Runs ok """
 
     cwd = os.path.abspath(os.getcwd())
@@ -58,16 +72,35 @@ def test_ok():
 
     try:
         basename = random_string()
-        name = basename + '.R'
+        name = basename + file_ext
         retval, out = getstatusoutput(f'{abs_new} {name}')
         assert retval == 0
         assert os.path.isfile(name)
         assert out == f'Done, see new script "{name}".'
+        assert open(name).read().startswith(expected)
 
     finally:
         if os.path.isdir(dirname):
             rmtree(dirname)
         os.chdir(cwd)
+
+
+# --------------------------------------------------
+def test_script():
+    """ creates proper script template """
+
+    expected = '#!/usr/bin/env Rscript'
+
+    run_program('.R', expected)
+
+
+# --------------------------------------------------
+def test_markdown():
+    """ creates proper markdown template """
+
+    expected = '---'
+
+    run_program('.Rmd', expected)
 
 
 # --------------------------------------------------
