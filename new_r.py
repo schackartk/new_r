@@ -42,12 +42,6 @@ def get_args() -> Args:
 
     parser.add_argument('program', help='New R file name', type=str)
 
-    parser.add_argument('-t',
-                        '--template',
-                        type=str,
-                        default=defaults.get('template', 'script'),
-                        help='Template type')
-
     parser.add_argument('-n',
                         '--name',
                         type=str,
@@ -79,20 +73,15 @@ def get_args() -> Args:
     if not args.program:
         parser.error(f'Not a usable filename "{args.program}"')
 
-    _, file_extension = os.path.splitext(args.program)
+    _, file_ext = os.path.splitext(args.program)
 
-    if file_extension == '.Rmd':
+    if file_ext == '.Rmd':
         args.template = 'markdown'
-    elif file_extension == '.R':
+    elif file_ext == '.R':
         args.template = 'script'
-
-    if args.template.lower() in ['rmd', 'md', 'rmarkdown', 'rmd']:
-        args.template = 'markdown'
-    elif args.template.lower() == 'r':
-        args.template = 'script'
-
-    if args.template not in ['script', 'markdown']:
-        parser.error(f'--template "{args.template}" not recognized')
+    else:
+        parser.error(f'File extension "{file_ext}" not recognized.\n'
+                     f'Extension must be either .R or .Rmd')
 
     return Args(program=args.program,
                 template=args.template,
